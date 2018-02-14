@@ -54,7 +54,7 @@ class DB
 public:
 
 	void sortList();
-	//vector<Student>::iterator find(vector <Student> v, string rollNum);
+	
 	void insert(string rollNum, float marks){
 		CompareStudent comp;				
 		Student SObj(rollNum,marks);
@@ -65,7 +65,7 @@ public:
 		else{
 			//cout<<"non empty\n";
 			//cout<<"roll for find: "<<rollNum<<endl;
-			//if(find(v,rollNum) == v.end()){
+			
 			if(find(v.begin(), v.end(), SObj) == v.end()){
 				//new entry 
 				//cout<<"new entry\n";
@@ -75,7 +75,7 @@ public:
 			}
 			else{
 				//cout<<"old entry\n";
-				//SObj.updateScore(marks);
+
 				auto it = find(v.begin(), v.end(), SObj);
 				it->updateScore(marks);
 				//cout<<it->getRoll()<<":"<<it->getMark()<<endl;
@@ -88,12 +88,23 @@ public:
 	};
 
 	void IsAdmit(int M, int N){
+		
 		float topMark = v[0].getMark();
+		float cutOff = topMark*N/100;
 
+		int c = count_if(v.begin(), v.end(), [cutOff](Student S){ return (S.getMark()>= cutOff); });
+		cout<<"count_if "<<c<<" cutOff "<<cutOff;
+		/*if(c >= M*S/100){
+			cout<<"count_if "<<c;
+		}
+		else{
+
+		}*/
 	}
 
-	int countStudentsMoreMarks(float x){
+	bool countStudentsMoreMarks(float x){
 		//return (S - lower_bound(v.begin(), v.end(), ))
+
 	}
 
 	void PRINT(){
@@ -102,11 +113,7 @@ public:
 			cout<<v[i].getRoll()<<" "<<v[i].getMark()<<endl;
 		}
 	}
-	DB(){
-		S = 0;
-	}
-
-	
+	DB(){ S = 0;}
 };
 
 
@@ -144,12 +151,15 @@ int main(int argc, char const *argv[])
 		if(!command.compare("IS_ADMIT")){
 			stream>>n1>>n2;
 			//cout<<"n1 "<<n1<<"n2 "<<n2;
+			data.IsAdmit(n1,n2);
 
 		}
 		else if(!command.compare("PRINT")){
 			if(!line.compare("PRINT")){
 				//no arg
-				//cout<<"no arg\n";}
+				//cout<<"no arg\n";
+
+			}
 			stream>>n1>>n2;
 			//cout<<"n1 "<<n1<<"n2 "<<n2;	
 		}
