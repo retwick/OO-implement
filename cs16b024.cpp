@@ -49,7 +49,7 @@ struct CompareStudent{
 
 class DB
 {
-	vector<Student> v;
+	vector<Student> v,ADMITTED;
 	int S;
 public:
 
@@ -58,6 +58,11 @@ public:
 	void insert(string rollNum, float marks){
 		CompareStudent comp;				
 		Student SObj(rollNum,marks);
+		if(find(ADMITTED.begin(), ADMITTED.end(), SObj) != ADMITTED.end()){
+			//previously admitted
+			cout<<"ALREADY ADMITTED\n";
+			return;
+		}
 		if(S == 0){
 			//cout<<"empty list\n";
 			v.push_back(SObj);						
@@ -74,8 +79,7 @@ public:
 				sort(v.begin(), v.end(), comp);
 			}
 			else{
-				//cout<<"ALREADY ADMITTED\n";
-
+				//re wrting exam
 				auto it = find(v.begin(), v.end(), SObj);
 				it->updateScore(marks);
 				//cout<<it->getRoll()<<":"<<it->getMark()<<endl;
@@ -105,25 +109,33 @@ public:
 	}
 	void Admit(int selected){
 		for (int i = 0; i < selected; ++i){
-			cout<<v[i].getRoll()<<" "<<v[i].getMark()<<endl;
+			cout<<v[i].getRoll()<<" "<< setiosflags(ios::fixed) << setprecision(3)<<v[i].getMark()<<endl;
+			ADMITTED.push_back(v[i]);
 		}
 	}
 	void DeleteApp(int selected){
 		for (int i = 0; i < selected; ++i){
-			cout<<"delting "<<v.begin()->getRoll()<<endl;
+			//cout<<"delting "<<v.begin()->getRoll()<<endl;
 			v.erase(v.begin());
+			S--;
 		}
 	}
 	void PRINT(){
+		/*
 		for (int i = 0; i < S; ++i)
-		{
+		{	//cout<<"i: "<<i<<endl;
 			cout<<v[i].getRoll()<<" "<<v[i].getMark()<<endl;
+		}
+		*/
+		for (std::vector<Student>::iterator i = v.begin(); i != v.end(); ++i)
+		{
+			cout<<i->getRoll()<<" "<< setiosflags(ios::fixed) << setprecision(3)<<i->getMark()<<endl;
 		}
 	}
 	void PRINT(int start, int end){
 		for (int i = start-1; i < end ; ++i)
 		{
-			cout<<v[i].getRoll()<<" "<<v[i].getMark()<<endl;
+			cout<<v[i].getRoll()<<" "<< setiosflags(ios::fixed) << setprecision(3)<<v[i].getMark()<<endl;
 		}
 	}
 	DB(){ S = 0;}
@@ -172,7 +184,7 @@ int main(int argc, char const *argv[])
 				//no arg
 				data.PRINT();
 				//cout<<"no arg\n";
-
+				continue;
 			}
 			stream>>n1>>n2;
 			data.PRINT(n1,n2);
