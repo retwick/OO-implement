@@ -88,27 +88,39 @@ public:
 	};
 
 	void IsAdmit(int M, int N){
-		
+		if(S<10){cout<<"NO\n"; return ;}
 		float topMark = v[0].getMark();
-		float cutOff = topMark*N/100;
+		float cutOff = topMark*N/100.0;
 
 		int c = count_if(v.begin(), v.end(), [cutOff](Student S){ return (S.getMark()>= cutOff); });
-		cout<<"count_if "<<c<<" cutOff "<<cutOff;
-		/*if(c >= M*S/100){
-			cout<<"count_if "<<c;
+		//cout<<"count_if "<<c<<" cutOff "<<cutOff;
+		if(c >= (int)M*S/100){
+			cout<<"YES\n";
+			Admit(S/10);
+			DeleteApp(S/10);		
 		}
 		else{
-
-		}*/
+			cout<<"NO\n";
+		}
 	}
-
-	bool countStudentsMoreMarks(float x){
-		//return (S - lower_bound(v.begin(), v.end(), ))
-
+	void Admit(int selected){
+		for (int i = 0; i < selected; ++i){
+			cout<<v[i].getRoll()<<" "<<v[i].getMark()<<endl;
+		}
 	}
-
+	void DeleteApp(int selected){
+		for (int i = 0; i < selected; ++i){
+			v.erase(v.begin());
+		}
+	}
 	void PRINT(){
 		for (int i = 0; i < S; ++i)
+		{
+			cout<<v[i].getRoll()<<" "<<v[i].getMark()<<endl;
+		}
+	}
+	void PRINT(int start, int end){
+		for (int i = start-1; i < end-1 ; ++i)
 		{
 			cout<<v[i].getRoll()<<" "<<v[i].getMark()<<endl;
 		}
@@ -136,7 +148,7 @@ int main(int argc, char const *argv[])
 		data.insert(roll,score);
 
 	}
-	data.PRINT();	
+	//data.PRINT();	
 	cin>>q;
 	while(q-- >= 0){
 		//cout<<q<<endl;
@@ -157,10 +169,12 @@ int main(int argc, char const *argv[])
 		else if(!command.compare("PRINT")){
 			if(!line.compare("PRINT")){
 				//no arg
+				data.PRINT();
 				//cout<<"no arg\n";
 
 			}
 			stream>>n1>>n2;
+			data.PRINT(n1,n2);
 			//cout<<"n1 "<<n1<<"n2 "<<n2;	
 		}
 		else if(!command.compare("INSERT")){
