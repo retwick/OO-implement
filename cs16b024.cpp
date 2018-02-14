@@ -74,7 +74,7 @@ public:
 				sort(v.begin(), v.end(), comp);
 			}
 			else{
-				//cout<<"old entry\n";
+				//cout<<"ALREADY ADMITTED\n";
 
 				auto it = find(v.begin(), v.end(), SObj);
 				it->updateScore(marks);
@@ -93,7 +93,7 @@ public:
 		float cutOff = topMark*N/100.0;
 
 		int c = count_if(v.begin(), v.end(), [cutOff](Student S){ return (S.getMark()>= cutOff); });
-		//cout<<"count_if "<<c<<" cutOff "<<cutOff;
+		//cout<<"count_if "<<c<<" cutOff "<<cutOff<<" MS/100 "<<(int)M*S/100<<" s/10 "<<S/10<<endl;
 		if(c >= (int)M*S/100){
 			cout<<"YES\n";
 			Admit(S/10);
@@ -110,6 +110,7 @@ public:
 	}
 	void DeleteApp(int selected){
 		for (int i = 0; i < selected; ++i){
+			cout<<"delting "<<v.begin()->getRoll()<<endl;
 			v.erase(v.begin());
 		}
 	}
@@ -179,7 +180,8 @@ int main(int argc, char const *argv[])
 		}
 		else if(!command.compare("INSERT")){
 			stream>>roll>>marks;
-			//cout<<"n1 "<<roll<<"n2 "<<marks;	
+			//cout<<"n1 "<<roll<<"n2 "<<marks;
+			data.insert(roll, marks);	
 		}
 		
 	}
