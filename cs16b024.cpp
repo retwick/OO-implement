@@ -120,7 +120,7 @@ public:
 		}
 	}
 	void PRINT(int start, int end){
-		for (int i = start-1; i < end-1 ; ++i)
+		for (int i = start-1; i < end ; ++i)
 		{
 			cout<<v[i].getRoll()<<" "<<v[i].getMark()<<endl;
 		}
