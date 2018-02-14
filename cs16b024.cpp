@@ -59,22 +59,22 @@ public:
 		CompareStudent comp;				
 		Student SObj(rollNum,marks);
 		if(S == 0){
-			cout<<"empty list\n";
+			//cout<<"empty list\n";
 			v.push_back(SObj);						
 		}
 		else{
-			cout<<"non empty\n";
-			cout<<"roll for find: "<<rollNum<<endl;
+			//cout<<"non empty\n";
+			//cout<<"roll for find: "<<rollNum<<endl;
 			//if(find(v,rollNum) == v.end()){
 			if(find(v.begin(), v.end(), SObj) == v.end()){
 				//new entry 
-				cout<<"new entry\n";
+				//cout<<"new entry\n";
 				//insert S in right position
 				v.push_back(SObj);				
 				sort(v.begin(), v.end(), comp);
 			}
 			else{
-				cout<<"old entry\n";
+				//cout<<"old entry\n";
 				//SObj.updateScore(marks);
 				auto it = find(v.begin(), v.end(), SObj);
 				it->updateScore(marks);
@@ -131,21 +131,33 @@ int main(int argc, char const *argv[])
 	}
 	data.PRINT();	
 	cin>>q;
-	while(q--){
+	while(q-- >= 0){
+		//cout<<q<<endl;
 		string command,roll,line;
 		float marks;
 		int n1, n2 ;
 		getline(cin, line);
 		stringstream stream(line);
 		stream>>command;
+		//cout<<"comm "<<command;
+		//cin>>command;
 		if(!command.compare("IS_ADMIT")){
 			stream>>n1>>n2;
-			cout<<"n1 "<<n1<<"n2 "<<n2;
+			//cout<<"n1 "<<n1<<"n2 "<<n2;
+
 		}
 		else if(!command.compare("PRINT")){
+			if(!line.compare("PRINT")){
+				//no arg
+				//cout<<"no arg\n";}
 			stream>>n1>>n2;
-			cout<<"n1 "<<n1<<"n2 "<<n2;	
+			//cout<<"n1 "<<n1<<"n2 "<<n2;	
 		}
+		else if(!command.compare("INSERT")){
+			stream>>roll>>marks;
+			//cout<<"n1 "<<roll<<"n2 "<<marks;	
+		}
+		
 	}
 	return 0;
 }
