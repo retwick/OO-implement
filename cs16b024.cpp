@@ -121,15 +121,10 @@ public:
 		}
 	}
 	void PRINT(){
-		/*
-		for (int i = 0; i < S; ++i)
-		{	//cout<<"i: "<<i<<endl;
-			cout<<v[i].getRoll()<<" "<<v[i].getMark()<<endl;
-		}
-		*/
+	
 		for (std::vector<Student>::iterator i = v.begin(); i != v.end(); ++i)
 		{
-			cout<<i->getRoll()<<" "<< setiosflags(ios::fixed) << setprecision(3)<<i->getMark()<<endl;
+			cout<<i->getRoll()<<" "<< setiosflags(ios::fixed) << setprecision(3)<<i->getMark()<< endl;
 		}
 	}
 	void PRINT(int start, int end){
@@ -143,9 +138,14 @@ public:
 
 
 int Student::getSumASCII(){	
+	if(sumASCII != 0) return sumASCII;
+	//cout<<"roll: "<<rollNum << "init: "<<sumASCII<<" ";
+
 	for(int i=0; i < rollNum.length(); ++i){
-		sumASCII += rollNum[i];
+	//	cout<<int(rollNum[i])<<"+";
+		sumASCII += int(rollNum[i]);
 	}
+	//cout<<"sum: "<<sumASCII<<endl;
 	return sumASCII;
 }
 
