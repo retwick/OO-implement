@@ -3,16 +3,16 @@ using namespace std;
 
 class Employee {
 private:
-	long long int sup_id; // unique obj_id of the supervisor
-	long long int obj_id; // a unique id for the object, that helps maintain and identify the hierarchy (it won’t change)
-	long long int obj_val; /* the employee id needs to be stored here (it’s the data value
-	of the object, that may change). This is required to be printed/operated on. */
+	int sup_id; // unique obj_id of the supervisor
+	int obj_id; // a unique id for the object, that helps maintain and identify the hierarchy (it won’t change)
+	int obj_val;
+	
 	Employee *left_subordinate;
 	Employee *right_subordinate;
 
 public:
 
-	Employee(long long int id){
+	Employee(int id){
 		obj_id = id;
 		obj_val = id;
 
@@ -20,6 +20,7 @@ public:
 		right_subordinate = NULL;
 	}
 
+	//function to assign subordinate to employee
 	void setSubordinate(class Employee *ptr){
 		if(left_subordinate == NULL)
 			left_subordinate = ptr;
@@ -29,9 +30,9 @@ public:
 	}
 	class Employee* getLeft (){ return left_subordinate; }
 	class Employee* getRight(){ return right_subordinate; }
-	long long int getVal(){return obj_val; }
-	long long int getID(){return obj_id; }
-	void setVal(long long int value){obj_val =value; }
+	int getVal(){return obj_val; }
+	int getID(){return obj_id; }
+	void setVal(int value){obj_val =value; }
 };
 
 class Tree
@@ -52,19 +53,20 @@ public:
 	void inOrderTraversal(class Employee* node); //step 5
 
 	//output line1
-	long long int treeDepth(class Employee* node);
+	int treeDepth(class Employee* node);
 
-	long long int diameter(class Employee* node);
+	int diameter(class Employee* node);
 
-	Tree (long long int n){		
-		long long int x;
+	Tree (int n){		
+		int x;
 		root = NULL;
-		for (long long int i = 0; i < n; ++i)
+		for (int i = 0; i < n; ++i)
 		{
 			class Employee* ptr = new Employee(i);			
 			v.push_back(ptr);
 		}
-		for (long long int i = 0; i < n; ++i)
+		//assign subordinates
+		for (int i = 0; i < n; ++i)
 		{
 			cin>>x;
 			if(x != -1){
@@ -91,14 +93,15 @@ public:
 	}
 };
 
-long long int Tree::diameter(class Employee* node){
+int Tree::diameter(class Employee* node){
+
 	//diameter of leaf is 0
 	if(node == NULL) return 0;
 
-	long long int ldia = diameter(node->getLeft());
-	long long int rdia = diameter(node->getRight());
-	long long int lh = treeDepth(node->getLeft());
-	long long int rh = treeDepth(node->getRight());
+	int ldia = diameter(node->getLeft());
+	int rdia = diameter(node->getRight());
+	int lh = treeDepth(node->getLeft());
+	int rh = treeDepth(node->getRight());
 	return max( max(ldia, rdia), lh+rh+1 );
 }
 
@@ -109,22 +112,26 @@ void Tree::incrementID(class Employee* ptr){
 
 	//node has two children
 	if(ptr->getLeft() != NULL && ptr->getRight() != NULL ){
-		long long int s = ptr->getLeft()->getVal() + ptr->getRight()->getVal() ;
+		int s = ptr->getLeft()->getVal() + ptr->getRight()->getVal() ;
 		if( s > ptr->getVal() ){
 			ptr->setVal(s);
 		}
 		else if(s < ptr->getVal() ){
 			//update left child ... only to be incremented
-			long long int temp = ptr->getVal() - ptr->getRight()->getVal();		
+			int temp = ptr->getVal() - ptr->getRight()->getVal();		
 			ptr->getLeft()->setVal(temp);
+
+			//carry the down the tree
 			incrementID(ptr->getLeft());
 		}
 	}
 	//if node has only left child
 	if(ptr->getLeft() != NULL && ptr->getRight() == NULL){
-		long long int t = ptr->getLeft()->getVal();
+		int t = ptr->getLeft()->getVal();
 		if(t < ptr->getVal()){
 			ptr->getLeft()->setVal(ptr->getVal());
+
+			//carry the change down the tree
 			incrementID(ptr->getLeft());
 		}
 		else if(t > ptr->getVal()){
@@ -155,16 +162,16 @@ void Tree::productEmployeeID(class Employee* node){
 	queue <class Employee* > q;
 	class Employee* ptr = node;
 	q.push(ptr);
-	long long int nodeCount = q.size();
-	long long int i = 0;
+	int nodeCount = q.size();
+	int i = 0;
 	while(1){
-		long long int prod = 1;
+		int prod = 1;
 		nodeCount = q.size();
 		if(!nodeCount) break;
 
 		while(nodeCount){			
 			ptr = q.front();
-			//cout<<ptr->getVal()<<" ";
+			
 			prod *= ptr->getVal();
 			q.pop();
 			if(ptr->getLeft())
@@ -229,7 +236,7 @@ void Tree::inOrderTraversal(class Employee* node){
 
 }
 
-long long int Tree::treeDepth(class Employee* node){
+int Tree::treeDepth(class Employee* node){
 	if(node == NULL) return 0;
 	//depth = max(depth left, depth right) + 1
 	return( max(treeDepth(node->getRight()), treeDepth(node->getLeft()) ) +1) ;
@@ -237,7 +244,7 @@ long long int Tree::treeDepth(class Employee* node){
 
 int main(int argc, char const *argv[])
 {
-	long long int n;
+	int n;
 	cin>>n;
 	class Tree T(n);
 	T.show();
