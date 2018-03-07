@@ -56,6 +56,8 @@ public:
 	//output line1
 	int treeDepth(class Employee* node);
 
+	int diameter(class Employee* node);
+
 	Tree (int n){		
 		int x;
 		root = NULL;
@@ -73,15 +75,35 @@ public:
 			else{
 				root = v[i];
 			}
-		}
-		//cout<<treeDepth(root)<< endl;
-		//levelOrderTraversal(root);
-		//productEmployeeID(root);
-		//preOrderTraversal(root);
-		//incrementID(root);
-		//inOrderTraversal(root);
+		}		
 	} //end of constructor
+
+	void show(){
+	cout<<treeDepth(root)<< endl;
+	levelOrderTraversal(root);
+	cout<<endl;
+	productEmployeeID(root);
+	cout<<endl;
+	preOrderTraversal(root);
+	cout<<endl;
+	incrementID(root);
+	inOrderTraversal(root);
+	cout<<endl;
+	cout<<diameter(root);
+	
+	}
 };
+
+int Tree::diameter(class Employee* node){
+	//diameter of leaf is 0
+	if(node == NULL) return 0;
+
+	int ldia = diameter(node->getLeft());
+	int rdia = diameter(node->getRight());
+	int lh = treeDepth(node->getLeft());
+	int rh = treeDepth(node->getRight());
+	return max( max(ldia, rdia), lh+rh+1 );
+}
 
 void Tree::incrementID(class Employee* ptr){
 	if(ptr == NULL) return;
@@ -221,5 +243,6 @@ int main(int argc, char const *argv[])
 	int n;
 	cin>>n;
 	class Tree T(n);
+	T.show();
 	return 0;
 }
