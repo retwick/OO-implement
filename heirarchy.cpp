@@ -31,6 +31,8 @@ public:
 	class Employee* getLeft (){ return left_subordinate; }
 	class Employee* getRight(){ return right_subordinate; }
 	int getVal(){return obj_val; }
+	int getID(){return obj_id; }
+	void setVal(int value){obj_val =value; }
 };
 
 class Tree
@@ -46,7 +48,7 @@ public:
 
 	void preOrderTraversal(class Employee* node); //step 3
 
-	int incrementID(class Employee &emp); //step 4
+	void incrementID(class Employee *node); //step 4
 	//recursively set ID as sum of sub ordinates
 
 	void inOrderTraversal(class Employee* node); //step 5
@@ -59,7 +61,6 @@ public:
 		root = NULL;
 		for (int i = 0; i < n; ++i)
 		{
-
 			class Employee* ptr = new Employee(i);			
 			v.push_back(ptr);
 		}
@@ -73,13 +74,43 @@ public:
 				root = v[i];
 			}
 		}
-		//preOrderTraversal(root);
-		//levelOrderTraversal(root);
 		//cout<<treeDepth(root)<< endl;
+		//levelOrderTraversal(root);
 		//productEmployeeID(root);
+		//preOrderTraversal(root);
+		//incrementID(root);
 		//inOrderTraversal(root);
 	} //end of constructor
 };
+
+void Tree::incrementID(class Employee* ptr){
+	if(ptr == NULL) return;
+	incrementID(ptr->getLeft());
+	incrementID(ptr->getRight());
+
+	//node has two children
+	if(ptr->getLeft() != NULL && ptr->getRight() != NULL ){
+		int s = ptr->getLeft()->getVal() + ptr->getRight()->getVal() ;
+		if( s > ptr->getVal() ){
+			ptr->setVal(s);
+		}
+		else if(s < ptr->getVal() ){
+			//update left child ... only to be incremented
+			int temp = ptr->getVal() - ptr->getRight()->getVal();		
+			ptr->getLeft()->setVal(temp);
+		}
+	}
+	//if node has only left child
+	if(ptr->getLeft() != NULL && ptr->getRight() == NULL){
+		int t = ptr->getLeft()->getVal();
+		if(t < ptr->getVal()){
+			ptr->getLeft()->setVal(ptr->getVal());
+		}
+		else if(t > ptr->getVal()){
+			ptr->setVal(ptr->getLeft()->getVal());
+		}
+	}
+}
 
 void Tree::levelOrderTraversal(class Employee* node){
 	
