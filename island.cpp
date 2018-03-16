@@ -40,6 +40,7 @@ public:
 	    //cout<<endl;
 	    setNodesInComponent();
 	    //for(int i = 0; i < V; ++i){ cout<<nodesInComponent[i]<<" ";}
+	    
 	}
 
 	void setNodesInComponent(){			
@@ -70,6 +71,13 @@ public:
 		return c;
 	}
 
+	int findBiggestIslandEntrance(){
+		auto max_size = max_element(nodesInComponent, nodesInComponent + V);
+		auto it = find(nodesInComponent, nodesInComponent+V, *max_size);
+		//cout<<"index "<< it - nodesInComponent<<endl; 
+		return (it-nodesInComponent);
+	}
+
 	//function to print start time and finish time in smallest city
 	void visitSmallestIsland(int entrance);
 
@@ -84,10 +92,10 @@ public:
 	    for (int u = 0; u < V; u++)
 	        if (!visited[u]) // Don't recur for u if it is already visited
 	          if (isCyclicUtil(u, visited, -1)){
-	          	 cout<<"YES";
+	          	 cout<<"YES\n";
 	             return ;
 	          }
-	 	cout<<"NO";
+	 	cout<<"NO\n";
 	    return ;
 	}
 
@@ -120,8 +128,9 @@ public:
 
 
 	//visit neighbouring cities with distance at most k
-	void visitBiggestIsland(int entrance, int k){
+	void visitBiggestIsland(int k){
 		int count = 0 ;
+		int entrance = findBiggestIslandEntrance();
 		neighbouringCity(entrance, k);
 	}
 
@@ -130,37 +139,41 @@ public:
 		int u;
 	   // Mark all the vertices as not visited
 	    bool *visited = new bool[V];
-	    for(int i = 0; i < V; i++)
-	        visited[i] = false;
+	    for(int i = 0; i < V; i++) visited[i] = false;
 	 
 	    // Create a queue for BFS
 	    queue<int> q;
-	    vector<int> k_nearest;
-	    // Mark the current node as visited and enqueue it
-	    visited[entrance] = true;
+	    //vector<int> k_nearest;	    
+		int level[V];
+		for(int i = 0; i < V; ++i){ level[i] = 0; }
 
-	    int count = 0;
-	    //push all neighbours of entrance into a queue
-	    for(auto i = adj[entrance].begin(); i!= adj[entrance].end(); ++i){
-   			q.push(*i);
-   			++count;
-   		}
-   		
-   		--k;
-
-		while(!q.empty() && k){
-			u = q.front();
+	    visited[entrance] = true; // Mark the current node as visited and enqueue it
+		level[entrance] = 0;
+	    q.push(entrance);
+   			    	   
+	    //cout<<"\nstart BFS\n";   	    
+		while(!q.empty() ){
+			u = q.front();			
+			//cout<<u+1<<" ";
 			q.pop();
 
-			k_nearest.push_back(u);		
-
+			//k_nearest.push_back(u);		
+		
 			for(auto i = adj[u].begin(); i!=adj[u].end(); ++i){
 				if(visited[*i] == false){
 					visited[*i] = true;
+					level[*i] = level[u] + 1;
 					q.push(*i);
 				}
 			}
 		}
+		
+		//cout<<"\nprint level\n";
+		for(int i = 0; i < V; ++i){
+			if(level[i] <= k && level[i]!= 0) cout<<i+1<<" ";
+			//cout<<level[i]<<" ";
+		}
+
 	}
 };
 
@@ -178,6 +191,7 @@ int main(int argc, char const *argv[])
 	
 	g.connectedComponents();
 	g.checkCycle();
-
+	//cout<<g.findBiggestIslandEntrance();
+	g.visitBiggestIsland(k);
 	return 0;
 }
